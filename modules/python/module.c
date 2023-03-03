@@ -1051,28 +1051,6 @@ void traceback(void)
 	PyObject *args = PyTuple_Pack(1, traceback);
 	PyObject *res = PyObject_CallObject(runtime.traceback.export_tb, args);
 
-	if( res && PyList_Check(res) )
-	{
-		size_t k;
-		for( k = PyList_GET_SIZE(res); k; --k )
-		{
-			PyObject *tuple = PyList_GET_ITEM(res, k-1);
-			char *filename = pyobjectstring(PyTuple_GET_ITEM(tuple, 0));
-			char *line_no = pyobjectstring(PyTuple_GET_ITEM(tuple, 1));
-			char *function_name = pyobjectstring(PyTuple_GET_ITEM(tuple, 2));
-			char *text = pyobjectstring(PyTuple_GET_ITEM(tuple, 3));
-//			g_warning(" %s:%s in %s \n\t %s", filename, line_no, function_name, text);
-			g_warning("%s:%s in %s", filename, line_no, function_name);
-			g_warning("\t %s", text);
-
-			g_free(filename);
-			g_free(line_no);
-			g_free(function_name);
-			g_free(text);
-
-		}
-	}
-
 	Py_XDECREF(res);
 	Py_XDECREF(args);
 
